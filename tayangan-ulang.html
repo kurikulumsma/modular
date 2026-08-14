@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tayangan Ulang MODULAR - Membuat Konten Digital untuk Pembelajaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        modular: {
+                            darkBlue: '#1e3a8a',
+                            blue: '#2563eb',
+                            cyan: '#06b6d4',
+                            yellow: '#facc15',
+                            yellowHover: '#eab308'
+                        },
+                        brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden flex flex-col min-h-screen">
+
+    <nav class="bg-white border-b border-slate-200 fixed w-full z-50 top-0 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+
+            <a href="modular.html" class="flex items-center gap-3">
+                <img src="https://sma.kemendikdasmen.go.id/images/logos/logo-sma-new.png" alt="Logo" class="h-10 sm:h-12 w-auto object-contain">
+                <div>
+                    <div class="font-bold text-slate-900 text-sm sm:text-base leading-tight"></div>
+                    <div class="text-[9px] sm:text-xs text-slate-500 uppercase tracking-wider font-semibold"></div>
+                </div>
+            </a>
+
+            <div id="desktopMenu" class="hidden lg:flex space-x-6 items-center">
+                <a href="https://sites.google.com/view/modularsma" class="text-sm font-medium text-slate-600 hover:text-modular-cyan transition">Kembali ke Beranda</a>
+
+                <div class="flex items-center gap-2 ml-2">
+                    <a href="https://sites.google.com/view/modularsma/sertifikat" target="_blank" class="bg-modular-cyan hover:bg-cyan-600 text-white px-5 py-2.5 rounded-full text-sm font-bold transition shadow-md flex items-center gap-1">
+                        Cek Sertifikat
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:hidden flex items-center" id="mobileMenuContainer">
+                <button id="mobileMenuBtn" class="text-slate-600 hover:text-modular-cyan focus:outline-none p-2 text-2xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden lg:hidden bg-white border-b border-slate-200 absolute w-full shadow-xl">
+            <div class="px-4 pt-2 pb-6 flex flex-col space-y-2">
+                <a href="index.html" class="mobile-link block px-3 py-3 text-base font-medium text-slate-700 hover:text-modular-cyan hover:bg-slate-50 rounded-xl">Kembali ke Beranda</a>
+
+                <div class="flex flex-col gap-2 mt-4">
+                    <a href="https://sites.google.com/view/modularsma/sertifikat" target="_blank" class="block w-full text-center bg-modular-cyan hover:bg-cyan-600 text-white px-5 py-3.5 rounded-full text-base font-bold transition shadow-md">
+                        <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Kirim Tugas Akhir
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 flex-grow w-full">
+
+        <section class="py-16 sm:py-20 bg-gradient-to-br from-modular-darkBlue via-modular-blue to-modular-cyan relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <span class="inline-block py-1.5 px-4 rounded-full bg-white/20 text-white text-xs font-bold mb-6 border border-white/30 uppercase tracking-wider backdrop-blur-sm">
+                    <i class="fa-solid fa-clapperboard mr-1"></i> Arsip Sesi Belajar
+                </span>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4 tracking-tight">
+                    Tayangan Ulang <span class="text-modular-yellow drop-shadow-md">MODULAR</span>
+                </h1>
+                <p class="text-base md:text-lg text-blue-50 max-w-2xl mx-auto font-light leading-relaxed">
+                    Lewatkan sesi live-nya? Tenang, seluruh rekaman pertemuan MODULAR bisa ditonton ulang kapan saja di sini.
+                </p>
+            </div>
+        </section>
+
+        <section class="py-16 sm:py-20 bg-slate-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-wrap justify-center gap-8">
+
+                    <div class="video-card w-full sm:w-[46%] lg:w-[30%] bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden">
+                        <div class="aspect-video w-full bg-slate-900">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/zLK8XybPceo?list=PLClcyQ2HwlJE" title="MODULAR Pertemuan 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-bold text-modular-cyan uppercase tracking-wider">Pertemuan 1</span>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-4">Pembuatan Media Pembelajaran Interaktif Berbasis Aplikasi</h3>
+                            <a href="https://www.youtube.com/watch?v=zLK8XybPceo&list=PLClcyQ2HwlJE&index=6" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-modular-blue hover:text-modular-darkBlue transition">
+                                Tonton di YouTube <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card w-full sm:w-[46%] lg:w-[30%] bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden">
+                        <div class="aspect-video w-full bg-slate-900">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/ze-sMNSXCfk?list=PLClcyQ2HwlJE" title="MODULAR Pertemuan 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-bold text-modular-cyan uppercase tracking-wider">Pertemuan 2</span>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-4">Pembuatan Gim Edukasi Berbasis Aplikasi</h3>
+                            <a href="http://youtube.com/watch?v=ze-sMNSXCfk&list=PLClcyQ2HwlJE&index=4&pp=iAQB" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-modular-blue hover:text-modular-darkBlue transition">
+                                Tonton di YouTube <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card w-full sm:w-[46%] lg:w-[30%] bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden">
+                        <div class="aspect-video w-full bg-slate-900">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/8hqdlXqNadE?list=PLClcyQ2HwlJE" title="MODULAR Pertemuan 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-bold text-modular-cyan uppercase tracking-wider">Pertemuan 3</span>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-4">Pembuatan Alat Peraga berbasis 3D</h3>
+                            <a href="https://www.youtube.com/watch?v=8hqdlXqNadE&list=PLClcyQ2HwlJE&index=4&t=1s" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-modular-blue hover:text-modular-darkBlue transition">
+                                Tonton di YouTube <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card w-full sm:w-[46%] lg:w-[30%] bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden">
+                        <div class="aspect-video w-full bg-slate-900">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/joUYaraZ5iE?list=PLClcyQ2HwlJE" title="MODULAR Pertemuan 4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-bold text-modular-cyan uppercase tracking-wider">Pertemuan 4</span>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-4">Pembuatan Media Pembelajaran Berbasis Kecerdasan Artificial</h3>
+                            <a href="https://www.youtube.com/watch?v=joUYaraZ5iE&list=PLClcyQ2HwlJE&index=2&pp=iAQB" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-modular-blue hover:text-modular-darkBlue transition">
+                                Tonton di YouTube <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="video-card w-full sm:w-[46%] lg:w-[30%] bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden">
+                        <div class="aspect-video w-full bg-slate-900">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/Gp07iK4ua8M?list=PLClcyQ2HwlJE" title="MODULAR Pertemuan 5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-bold text-modular-cyan uppercase tracking-wider">Pertemuan 5</span>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-4">Pembuatan Lab Maya Berbasis Kecerdasan Artificial</h3>
+                            <a href="https://youtube.com/watch?v=Gp07iK4ua8M&list=PLClcyQ2HwlJE&index=1&pp=iAQB" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-modular-blue hover:text-modular-darkBlue transition">
+                                Tonton di YouTube <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 py-8 text-slate-400 text-xs sm:text-sm mt-auto w-full border-t-4 border-modular-cyan">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <span>© 2026 Direktorat SMA - Kemendikdasmen RI.</span>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+        const icon = btn.querySelector('i');
+
+        function tutupMenuMobile() {
+            menu.classList.add('hidden');
+            icon.classList.remove('fa-xmark'); icon.classList.add('fa-bars');
+        }
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) { icon.classList.remove('fa-xmark'); icon.classList.add('fa-bars'); }
+            else { icon.classList.remove('fa-bars'); icon.classList.add('fa-xmark'); }
+        });
+        document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', tutupMenuMobile));
+    </script>
+</body>
+</html>

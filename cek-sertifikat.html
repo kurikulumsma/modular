@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Sertifikat MODULAR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        modular: {
+                            darkBlue: '#1e3a8a',
+                            blue: '#2563eb',
+                            cyan: '#06b6d4',
+                            yellow: '#facc15',
+                            yellowHover: '#eab308'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans antialiased text-slate-800 min-h-screen flex flex-col">
+
+    <!-- ===== NAV: LOGO (link) + HELPDESK ===== -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex justify-between items-center">
+            <a href="https://sites.google.com/view/modularsma/modular" target="_blank" class="flex items-center gap-3 shrink-0">
+                <img src="https://sma.kemendikdasmen.go.id/images/logos/logo-sma-new.png" alt="Logo Direktorat SMA" class="h-9 sm:h-12 w-auto object-contain">
+            </a>
+            <a href="https://wa.me/6285218732791" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 border border-emerald-200 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-sm shrink-0">
+                <i class="fa-brands fa-whatsapp text-base sm:text-lg"></i> Helpdesk
+            </a>
+        </div>
+    </nav>
+
+    <!-- ===== AREA BIRU PENUH: HERO (di luar kartu) + KARTU ===== -->
+    <main class="flex-grow relative overflow-y-auto bg-gradient-to-br from-modular-darkBlue via-modular-blue to-modular-cyan flex flex-col items-center justify-center px-4 py-10 sm:py-12">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+
+        <!-- HERO (area biru) -->
+        <div class="relative z-10 text-center mb-7 sm:mb-8 px-2 max-w-xl">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-white/20 text-white text-[10px] sm:text-xs font-bold mb-4 border border-white/30 uppercase tracking-wider backdrop-blur-sm">
+                <i class="fa-solid fa-award mr-1"></i> Portal Sertifikat
+            </span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-3 tracking-tight">
+                Cek Sertifikat <span class="text-modular-yellow">MODULAR</span>
+            </h1>
+            <p class="text-blue-50 text-sm md:text-base font-light max-w-lg mx-auto leading-relaxed">
+                Masukkan email yang Anda gunakan di Google Classroom untuk mengunduh e-Sertifikat MODULAR Anda.
+            </p>
+        </div>
+
+        <!-- KARTU -->
+        <div class="relative z-10 w-full max-w-md sm:max-w-lg bg-white rounded-[1.75rem] sm:rounded-[2rem] border border-white/40 shadow-2xl overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-modular-cyan via-modular-blue to-modular-yellow"></div>
+            <div class="p-6 sm:p-9">
+
+                <!-- VIEW: INPUT EMAIL -->
+                <div id="viewInput">
+                    <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+                    <input type="email" id="inputEmail" placeholder="nama@guru.sma.belajar.id" autocomplete="email" inputmode="email"
+                        class="w-full px-5 py-3.5 text-base sm:text-sm bg-slate-50 rounded-xl border border-slate-200 focus:border-modular-cyan focus:ring-2 focus:ring-modular-cyan/20 focus:bg-white outline-none transition placeholder-slate-400"
+                        onkeydown="if(event.key==='Enter') cekEmail()">
+                    <p id="inputError" class="text-xs text-red-600 mt-2 hidden font-semibold">
+                        <i class="fa-solid fa-circle-exclamation mr-1"></i> <span id="inputErrorText"></span>
+                    </p>
+
+                    <button onclick="cekEmail()" class="w-full mt-6 px-8 py-4 bg-modular-blue hover:bg-blue-800 text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl active:scale-[0.99] flex justify-center items-center text-base">
+                        <i class="fa-solid fa-magnifying-glass mr-2"></i> Cek Sertifikat
+                    </button>
+                </div>
+
+                <!-- VIEW: LOADING -->
+                <div id="viewLoading" class="hidden text-center py-10">
+                    <i class="fa-solid fa-circle-notch fa-spin text-4xl text-modular-cyan mb-5"></i>
+                    <p id="loadingMsg" class="text-slate-600 font-medium">Memuat...</p>
+                    <p class="text-xs text-slate-400 mt-2">Mohon tunggu, jangan tutup halaman ini.</p>
+                    <p id="loadingPct" class="text-sm font-bold text-modular-blue tabular-nums mt-3">0%</p>
+                </div>
+
+                <!-- VIEW: PESAN (tidak ditemukan / error / info) -->
+                <div id="viewMessage" class="hidden text-center py-6">
+                    <div id="msgIconWrap" class="w-20 h-20 rounded-full flex items-center justify-center mb-6 mx-auto border">
+                        <i id="msgIcon" class="text-4xl"></i>
+                    </div>
+                    <h2 id="msgTitle" class="text-xl font-bold text-slate-900 mb-2"></h2>
+                    <p id="msgText" class="text-sm text-slate-600 max-w-md mx-auto mb-8 leading-relaxed"></p>
+                    <button onclick="resetPortal()" class="px-8 py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-full transition shadow-sm text-sm flex items-center gap-2 mx-auto">
+                        <i class="fa-solid fa-arrow-left"></i> Cek Email Lain
+                    </button>
+                </div>
+
+                <!-- VIEW: HASIL (sertifikat sudah ada) -->
+                <div id="viewResult" class="hidden">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4 mx-auto border border-green-100">
+                            <i class="fa-solid fa-circle-check text-3xl text-green-500"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-900">Sertifikat Ditemukan</h2>
+                        <p class="text-sm text-slate-500 mt-1">Periksa kembali data di bawah ini sebelum mengunduh. Data yang ditampilkan berasal dari informasi yang Anda isi saat pendaftaran.</p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-5 mb-6 space-y-3">
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Nama</p>
+                            <p id="resNama" class="font-semibold text-slate-800 text-sm break-words"></p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Instansi</p>
+                            <p id="resInstansi" class="text-slate-700 text-sm break-words"></p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Provinsi</p>
+                            <p id="resProvinsi" class="text-slate-700 text-sm break-words"></p>
+                        </div>
+                    </div>
+
+                    <a id="resDownload" href="#" target="_blank" class="w-full px-8 py-4 bg-modular-blue hover:bg-blue-800 text-white font-bold rounded-full transition-all shadow-lg active:scale-[0.99] flex justify-center items-center text-base mb-3">
+                        <i class="fa-solid fa-download mr-2"></i> Unduh Sertifikat (PDF)
+                    </a>
+
+                    <!-- tombol perbaiki: seukuran tombol unduh, versi putih -->
+                    <button id="resKoreksiAvail" onclick="bukaFormKoreksi()" class="w-full px-8 py-4 bg-white hover:bg-slate-50 text-modular-blue font-medium rounded-full border-2 border-slate-200 hover:border-modular-blue/40 transition-all shadow-sm active:scale-[0.99] flex justify-center items-center text-base">
+                        <i class="fa-solid fa-pen-to-square mr-2"></i> Data belum sesuai? Ajukan perbaikan data
+                    </button>
+                    <div id="resKoreksiUsed" class="hidden text-center bg-amber-50 border border-amber-200 rounded-xl p-3">
+                        <p class="text-xs text-amber-700 font-medium">
+                            <i class="fa-solid fa-circle-info mr-1"></i> Perbaikan data hanya dapat dilakukan 1 kali. Kesempatan tersebut telah Anda gunakan. Jika masih terdapat kesalahan, silakan hubungi Helpdesk.
+                        </p>
+                    </div>
+
+                    <div class="text-center mt-6 pt-5 border-t border-slate-100">
+                        <button onclick="resetPortal()" class="text-xs text-slate-400 hover:text-slate-600 font-semibold">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Cek Email Lain
+                        </button>
+                    </div>
+                </div>
+
+                <!-- VIEW: FORM (isi pertama / koreksi) -->
+                <div id="viewForm" class="hidden">
+                    <div class="mb-6">
+                        <h2 id="formTitle" class="text-xl font-bold text-slate-900 mb-1"></h2>
+                        <p id="formSubtitle" class="text-sm text-slate-500"></p>
+                    </div>
+
+                    <div id="formWarning" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 flex items-start gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
+                        <p class="text-xs text-amber-700 leading-relaxed">Perbaikan data hanya dapat dilakukan <b>1 kali</b>. Pastikan data yang Anda masukkan sudah benar sebelum menyimpan.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">Nama Lengkap &amp; Gelar <span class="text-red-500">*</span></label>
+                            <input type="text" id="formNama" placeholder="Contoh: Budi Santoso, S.Pd."
+                                class="w-full px-5 py-3.5 text-base sm:text-sm bg-slate-50 rounded-xl border border-slate-200 focus:border-modular-cyan focus:ring-2 focus:ring-modular-cyan/20 focus:bg-white outline-none transition placeholder-slate-400">
+                            <p class="text-[11px] text-slate-400 mt-1.5"><i class="fa-solid fa-circle-info mr-1"></i> Nama ini yang akan tercetak di sertifikat.</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">Instansi <span class="text-red-500">*</span></label>
+                            <input type="text" id="formInstansi" placeholder="Nama sekolah / instansi"
+                                class="w-full px-5 py-3.5 text-base sm:text-sm bg-slate-50 rounded-xl border border-slate-200 focus:border-modular-cyan focus:ring-2 focus:ring-modular-cyan/20 focus:bg-white outline-none transition placeholder-slate-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">Provinsi <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select id="formProvinsi"
+                                    class="w-full px-5 py-3.5 pr-10 text-base sm:text-sm bg-slate-50 rounded-xl border border-slate-200 focus:border-modular-cyan focus:ring-2 focus:ring-modular-cyan/20 focus:bg-white outline-none transition appearance-none cursor-pointer">
+                                    <option value="">-- Pilih Provinsi --</option>
+                                    <option>Aceh</option>
+                                    <option>Bali</option>
+                                    <option>Banten</option>
+                                    <option>Bengkulu</option>
+                                    <option>D.I. Yogyakarta</option>
+                                    <option>D.K.I. Jakarta</option>
+                                    <option>Gorontalo</option>
+                                    <option>Jambi</option>
+                                    <option>Jawa Barat</option>
+                                    <option>Jawa Tengah</option>
+                                    <option>Jawa Timur</option>
+                                    <option>Kalimantan Barat</option>
+                                    <option>Kalimantan Selatan</option>
+                                    <option>Kalimantan Tengah</option>
+                                    <option>Kalimantan Timur</option>
+                                    <option>Kalimantan Utara</option>
+                                    <option>Kepulauan Bangka Belitung</option>
+                                    <option>Kepulauan Riau</option>
+                                    <option>Lampung</option>
+                                    <option>Maluku</option>
+                                    <option>Maluku Utara</option>
+                                    <option>Nusa Tenggara Barat</option>
+                                    <option>Nusa Tenggara Timur</option>
+                                    <option>Papua</option>
+                                    <option>Papua Barat</option>
+                                    <option>Papua Barat Daya</option>
+                                    <option>Papua Pegunungan</option>
+                                    <option>Papua Selatan</option>
+                                    <option>Papua Tengah</option>
+                                    <option>Riau</option>
+                                    <option>Sulawesi Barat</option>
+                                    <option>Sulawesi Selatan</option>
+                                    <option>Sulawesi Tengah</option>
+                                    <option>Sulawesi Tenggara</option>
+                                    <option>Sulawesi Utara</option>
+                                    <option>Sumatera Barat</option>
+                                    <option>Sumatera Selatan</option>
+                                    <option>Sumatera Utara</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p id="formError" class="text-xs text-red-600 mt-3 hidden font-semibold">
+                        <i class="fa-solid fa-circle-exclamation mr-1"></i> <span id="formErrorText"></span>
+                    </p>
+
+                    <button onclick="submitForm()" class="w-full mt-6 px-8 py-4 bg-modular-blue hover:bg-blue-800 text-white font-bold rounded-full transition-all shadow-lg active:scale-[0.99] flex justify-center items-center text-base">
+                        <i class="fa-solid fa-floppy-disk mr-2"></i> <span id="formSubmitLabel">Simpan &amp; Buat Sertifikat</span>
+                    </button>
+                    <div class="text-center mt-4">
+                        <button onclick="batalForm()" class="text-xs text-slate-400 hover:text-slate-600 font-semibold">Batal</button>
+                    </div>
+                </div>
+
+                <!-- VIEW: SUKSES -->
+                <div id="viewSuccess" class="hidden text-center py-4">
+                    <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6 mx-auto border border-green-100">
+                        <i class="fa-solid fa-check text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-2">Sertifikat Siap!</h2>
+                    <p class="text-sm text-slate-600 max-w-md mx-auto mb-8">Sertifikat Anda berhasil dibuat. Klik tombol di bawah untuk mengunduh.</p>
+                    <a id="successDownload" href="#" target="_blank" class="inline-flex px-8 py-4 bg-modular-blue hover:bg-blue-800 text-white font-bold rounded-full transition-all shadow-lg active:scale-[0.99] justify-center items-center text-base mb-4">
+                        <i class="fa-solid fa-download mr-2"></i> Unduh Sertifikat (PDF)
+                    </a>
+                    <div class="mt-4">
+                        <button onclick="resetPortal()" class="text-xs text-slate-400 hover:text-slate-600 font-semibold">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Cek Email Lain
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <p class="relative z-10 text-center text-white/70 text-[11px] sm:text-xs mt-7">
+            © 2026 Direktorat SMA - Kemendikdasmen RI.
+        </p>
+    </main>
+
+    <script>
+        // ===== LINK WEB APP GOOGLE SCRIPT (/exec) =====
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwSqYtNWKyNvQlMUGa2tS0MFvaVisJnXZh1M6_ec4AozFAs5EMd3Oi2uCrh617m_0Xy/exec';
+
+        const views = ['viewInput', 'viewLoading', 'viewMessage', 'viewResult', 'viewForm', 'viewSuccess'];
+
+        let currentEmail = '';
+        let currentData = null;
+        let formMode = 'isi'; // 'isi' = pengisian pertama, 'koreksi' = perbaikan sertifikat yang sudah ada
+
+        // ---- loading persen (simulasi progres) ----
+        let loadingTimer = null;
+        let loadingPct = 0;
+
+        function updatePct(v) {
+            document.getElementById('loadingPct').innerText = v + '%';
+        }
+
+        function showView(id) {
+            if (id !== 'viewLoading') { clearInterval(loadingTimer); loadingTimer = null; }
+            views.forEach(function (v) { document.getElementById(v).classList.add('hidden'); });
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function showLoading(msg) {
+            document.getElementById('loadingMsg').innerText = msg || 'Memuat...';
+            loadingPct = 0;
+            updatePct(0);
+            showView('viewLoading');
+            clearInterval(loadingTimer);
+            loadingTimer = setInterval(function () {
+                var remaining = 90 - loadingPct;
+                if (remaining <= 0) return;
+                loadingPct += Math.max(1, Math.round(remaining * 0.09));
+                if (loadingPct > 90) loadingPct = 90;
+                updatePct(loadingPct);
+            }, 170);
+        }
+
+        function showMessage(type, title, text) {
+            var wrap = document.getElementById('msgIconWrap');
+            var icon = document.getElementById('msgIcon');
+            wrap.className = 'w-20 h-20 rounded-full flex items-center justify-center mb-6 mx-auto border';
+            icon.className = 'text-4xl';
+
+            if (type === 'notfound') {
+                wrap.classList.add('bg-slate-100', 'border-slate-200');
+                icon.classList.add('fa-solid', 'fa-user-slash', 'text-slate-400');
+            } else if (type === 'error') {
+                wrap.classList.add('bg-red-50', 'border-red-100');
+                icon.classList.add('fa-solid', 'fa-triangle-exclamation', 'text-red-500');
+            } else {
+                wrap.classList.add('bg-blue-50', 'border-blue-100');
+                icon.classList.add('fa-solid', 'fa-circle-info', 'text-modular-blue');
+            }
+            document.getElementById('msgTitle').innerText = title;
+            document.getElementById('msgText').innerText = text;
+            showView('viewMessage');
+        }
+
+        // ===== 1. CEK EMAIL (GET) =====
+        function cekEmail() {
+            var email = document.getElementById('inputEmail').value.trim();
+            var err = document.getElementById('inputError');
+            var errT = document.getElementById('inputErrorText');
+            var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email || !re.test(email)) {
+                errT.innerText = 'Masukkan alamat email yang valid.';
+                err.classList.remove('hidden');
+                return;
+            }
+            err.classList.add('hidden');
+            currentEmail = email;
+            showLoading('Mengecek data peserta...');
+
+            fetch(scriptURL + '?action=cek&email=' + encodeURIComponent(email))
+                .then(function (r) { return r.json(); })
+                .then(onCekResult)
+                .catch(onError);
+        }
+
+        function onCekResult(res) {
+            if (!res || !res.found) {
+                showMessage('notfound', 'Email Tidak Terdaftar',
+                    'Email Anda tidak terdata sebagai peserta MODULAR. Pastikan Anda memakai email yang sama seperti di Google Classroom.');
+                return;
+            }
+            currentData = res;
+
+            if (res.sertifikat) {
+                renderResult(res);
+            } else {
+                var lengkap = res.nama && res.instansi && res.provinsi;
+                if (lengkap) {
+                    showLoading('Membuat sertifikat Anda...');
+                    postAksi({ action: 'generate', email: currentEmail }, onGenerated);
+                } else {
+                    bukaFormIsi(res);
+                }
+            }
+        }
+
+        // ===== Helper POST (FormData -> tanpa preflight CORS) =====
+        function postAksi(fields, onSuccess) {
+            var fd = new FormData();
+            Object.keys(fields).forEach(function (k) { fd.append(k, fields[k]); });
+            fetch(scriptURL, { method: 'POST', body: fd })
+                .then(function (r) { return r.json(); })
+                .then(onSuccess)
+                .catch(onError);
+        }
+
+        // ===== 2. HASIL: SERTIFIKAT SUDAH ADA =====
+        function renderResult(res) {
+            document.getElementById('resNama').innerText = res.nama || '-';
+            document.getElementById('resInstansi').innerText = res.instansi || '-';
+            document.getElementById('resProvinsi').innerText = res.provinsi || '-';
+            document.getElementById('resDownload').href = res.sertifikat;
+
+            if (res.koreksi_terpakai) {
+                document.getElementById('resKoreksiAvail').classList.add('hidden');
+                document.getElementById('resKoreksiUsed').classList.remove('hidden');
+            } else {
+                document.getElementById('resKoreksiAvail').classList.remove('hidden');
+                document.getElementById('resKoreksiUsed').classList.add('hidden');
+            }
+            showView('viewResult');
+        }
+
+        // ===== 3. HASIL GENERATE (data lengkap) =====
+        function onGenerated(res) {
+            if (res && res.success) {
+                showSuccess(res.url);
+            } else {
+                showMessage('error', 'Gagal Membuat Sertifikat',
+                    (res && res.message) ? res.message : 'Terjadi kesalahan. Silakan hubungi Helpdesk.');
+            }
+        }
+
+        // ===== 4. FORM: ISI PERTAMA vs KOREKSI =====
+        function bukaFormIsi(res) {
+            formMode = 'isi';
+            document.getElementById('formTitle').innerText = 'Lengkapi Data Anda';
+            document.getElementById('formSubtitle').innerText = 'Data Anda belum lengkap. Isi data berikut untuk membuat sertifikat.';
+            document.getElementById('formWarning').classList.add('hidden');
+            document.getElementById('formSubmitLabel').innerText = 'Simpan & Buat Sertifikat';
+            isiFormFields(res);
+            showView('viewForm');
+        }
+
+        function bukaFormKoreksi() {
+            formMode = 'koreksi';
+            document.getElementById('formTitle').innerText = 'Perbaiki Data Sertifikat';
+            document.getElementById('formSubtitle').innerText = 'Ubah data yang salah, lalu simpan untuk membuat ulang sertifikat.';
+            document.getElementById('formWarning').classList.remove('hidden');
+            document.getElementById('formSubmitLabel').innerText = 'Simpan & Buat Ulang';
+            isiFormFields(currentData);
+            showView('viewForm');
+        }
+
+        function isiFormFields(res) {
+            document.getElementById('formNama').value = res.nama || '';
+            document.getElementById('formInstansi').value = res.instansi || '';
+            document.getElementById('formProvinsi').value = res.provinsi || '';
+            document.getElementById('formError').classList.add('hidden');
+        }
+
+        function batalForm() {
+            if (currentData && currentData.sertifikat) {
+                renderResult(currentData);
+            } else {
+                resetPortal();
+            }
+        }
+
+        function submitForm() {
+            var nama = document.getElementById('formNama').value.trim();
+            var instansi = document.getElementById('formInstansi').value.trim();
+            var provinsi = document.getElementById('formProvinsi').value.trim();
+            var err = document.getElementById('formError');
+            var errT = document.getElementById('formErrorText');
+
+            if (!nama || !instansi || !provinsi) {
+                errT.innerText = 'Semua kolom wajib diisi.';
+                err.classList.remove('hidden');
+                return;
+            }
+            err.classList.add('hidden');
+            showLoading(formMode === 'koreksi' ? 'Menyimpan & membuat ulang sertifikat...' : 'Menyimpan & membuat sertifikat...');
+            postAksi({ action: 'submit', email: currentEmail, nama: nama, instansi: instansi, provinsi: provinsi }, onSubmitted);
+        }
+
+        function onSubmitted(res) {
+            if (res && res.success) {
+                showSuccess(res.url);
+            } else {
+                showMessage('error', 'Gagal Menyimpan',
+                    (res && res.message) ? res.message : 'Terjadi kesalahan. Silakan hubungi Helpdesk.');
+            }
+        }
+
+        // ===== 5. SUKSES =====
+        function showSuccess(url) {
+            document.getElementById('successDownload').href = url;
+            showView('viewSuccess');
+        }
+
+        // ===== ERROR SISTEM =====
+        function onError(err) {
+            showMessage('error', 'Terjadi Kesalahan',
+                'Sistem gagal memproses permintaan. Silakan coba lagi atau hubungi Helpdesk.');
+        }
+
+        // ===== RESET =====
+        function resetPortal() {
+            document.getElementById('inputEmail').value = '';
+            document.getElementById('inputError').classList.add('hidden');
+            currentData = null;
+            currentEmail = '';
+            showView('viewInput');
+        }
+    </script>
+</body>
+</html>
